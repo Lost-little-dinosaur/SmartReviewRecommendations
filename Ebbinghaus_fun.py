@@ -79,8 +79,8 @@ def Ebbinghaus_fun_orig_t(xdata,ydata):
     r_squared = 1 - (ss_res / ss_tot)
 
     # ### Output results ###
-    print("a = %f  b = %f   R2 = %f" % (popt[0], popt[1], r_squared))
-    print(ydata, calc_ydata)
+    # print("a = %f  b = %f   R2 = %f" % (popt[0], popt[1], r_squared))
+    # print(ydata, calc_ydata)
     return popt[0], popt[1],popt[2]
 
 #使用该幂函数拟合艾宾浩斯初始曲线
@@ -108,8 +108,8 @@ def Ebbinghaus_fun_orig_f(xdata,ydata):
     r_squared = 1 - (ss_res / ss_tot)
 
     # ### Output results ###
-    print("a = %f  b = %f c = %f  R2 = %f" % (popt[0], popt[1],popt[2], r_squared))
-    print(ydata, calc_ydata)
+    # print("a = %f  b = %f c = %f  R2 = %f" % (popt[0], popt[1],popt[2], r_squared))
+    # print(ydata, calc_ydata)
     return popt[0],popt[1],popt[2]
 
 
@@ -156,7 +156,7 @@ def para_return_ff(t):
 
 
 ##输入时间间隔输出参数K,A,C  B = K * t ^ A + C
-def para_return_ft(t):
+def para_return_ft(timestamp):
 
     # 第一次错，第二次对
     xdata_f_t_60 = [0, 19.8, 60, 528, 1440, 2880, 14880]
@@ -194,8 +194,7 @@ def para_return_ft(t):
     A_f_t = np.array(A_f_t)
     Z_A = np.polyfit(t,A_f_t,3)
     A_F_T = np.poly1d(Z_A)
-
-    return K_F_T(t),A_F_T(t),C_F_T(t)
+    return K_F_T(timestamp),A_F_T(timestamp),C_F_T(timestamp)
 
 
 
@@ -207,13 +206,7 @@ if __name__ == '__main__':
     xdata_t = [0,19.8, 60, 528, 1440, 2880,14880]
     ydata_t = [100,98.2, 94.2, 88.8, 83.7, 77.8,75.4]
 
-
-
-
-
-
-
-    k_t,c_t,a_t = Ebbinghaus_fun_orig_t(xdata_t,ydata_t)
+    # k_t,c_t,a_t = Ebbinghaus_fun_orig_t(xdata_t,ydata_t)
     # plt.xlabel('t')
     # plt.ylabel('b')
     # plt.title("遗忘曲线3")
@@ -225,6 +218,25 @@ if __name__ == '__main__':
 
     # print(K_f_t,A_f_t,C_f_t)
 
-
-
-
+    k,a,c = para_return_ft(100)
+    # print(k,a,c)
+    t = np.arange(0,1000,1)
+    y_t_1 = k_f * np.power(t,c_f) + a_f
+    y_t_1 = np.array(y_t_1)
+    # y_t_1 = y_t_1.reshape(y_t_1,1,100)
+    y_t_1 = y_t_1.tolist()
+    t = np.arange(1000,10000,1)
+    y_t_2 = k * np.power(t,c) + a
+    y_t_2 = np.array(y_t_2)
+    y_t_2 = y_t_2.tolist()
+    # y_t_2 = y_t_2.reshape(y_t_1, 1, 900)
+    # print(y_t_1,y_t_2)
+    y = y_t_1 + y_t_2
+    t = np.arange(0,10000,1)
+    # print(type(y_t_2))
+    plt.xlabel('t')
+    plt.ylabel('b')
+    plt.title("遗忘曲线")
+    plt.plot(t, y)
+    # plt.savefig('./True_First_ori.png')
+    plt.show()
