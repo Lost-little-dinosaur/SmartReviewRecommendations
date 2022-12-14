@@ -1,7 +1,6 @@
 import json
 import pickle
 
-from static import jsonData
 import pymysql
 import matplotlib.pyplot as plt
 import pandas as pd
