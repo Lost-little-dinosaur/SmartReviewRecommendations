@@ -232,7 +232,7 @@ def doWrongSimulation(userAnswerDict, nowTime, questionArr, questionNum, proport
         else:
             returnDict[question] = [[0, nowTime]]
     # 答旧题
-        # print(timeInterval, memoryRateArr[-1])
+    # print(timeInterval, memoryRateArr[-1])
     # 根据memoryRateArr中的值，随机选出oldQuestionNum个题目
     # 选出所有未曾做对的题目
     wrongQuestionArr = []
@@ -323,5 +323,5 @@ if __name__ == '__main__':
     eachDayNum = 200
     proportion = 50
     seed = 1
-    rightAccuracy = 0.6
+    rightAccuracy = 0.5
     main(practiceDays, eachDayNum, proportion, seed, rightAccuracy)
