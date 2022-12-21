@@ -319,8 +319,8 @@ def main(practiceDays, eachDayNum, proportion, seed, rightAccuracy):
 
 
 if __name__ == '__main__':
-    practiceDays = 30
-    eachDayNum = 200
+    practiceDays = 10
+    eachDayNum = 500
     proportion = 50
     seed = 1
     rightAccuracy = 0.5

@@ -10,7 +10,6 @@ def getTwoThreeAnswerList():
     dirPath = "AllUsersAnswers/"
     for each in os.listdir(dirPath):
         with open(dirPath + each, 'rb') as f:
-
             twoAnswerArr = []
             threeAnswerArr = []
             questionSetUserAnswerArr = pickle.load(f)
