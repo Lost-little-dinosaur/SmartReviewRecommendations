@@ -332,20 +332,9 @@ def TwoAnswerCurves(data1, data2):
     return popt[0], popt[1]
 
 
-print('该遗忘曲线的函数模型为 : y = e**(a * x + b) [注:y为记忆率]')
-
-##第2次答题最终的参数确定和部分时间间隔的输出测试
+ ##第2次答题最终的参数确定和部分时间间隔的输出测试
 a_FirstTrue, b_FirstTrue = TwoAnswerCurves(result_T[:, 0], result_T[:, 1])
 a_FirstFalse, b_FirstFalse = TwoAnswerCurves(result_F[:, 0], result_F[:, 1])
-
-i = np.array([30, 60, 100, 720, 1440, 2880, 6480, 12480, 18240, 32400, 243697])
-for x in i:
-    y_FirstTrue = math.e ** (a_FirstTrue * x + b_FirstTrue)
-    y_FirstFalse = math.e ** (a_FirstFalse * x + b_FirstFalse)
-    # print(x, '分钟间隔后第1次正确、错误的情况下第2次答题正确率为', y_FirstTrue, y_FirstFalse)
-
-print('第1次正确的参数为：', 'a = ', a_FirstTrue, 'b = ', b_FirstTrue)
-print('第1次错误的参数为：', 'a = ', a_FirstFalse, 'b = ', b_FirstFalse)
 
 ##第3次答题最终的参数确定和部分时间间隔的输出测试
 a_FirstTrueSecondTrue, b_FirstTrueSecondTrue = TwoAnswerCurves(result_T_T[:, 0], result_T_T[:, 1])
@@ -353,16 +342,35 @@ a_FirstTrueSecondFalse, b_FirstTrueSecondFalse = TwoAnswerCurves(result_T_F[:, 0
 a_FirstFalseSecondTrue, b_FirstFalseSecondTrue = TwoAnswerCurves(result_F_T[:, 0], result_F_T[:, 1])
 a_FirstFalseSecondFalse, b_FirstFalseSecondFalse = TwoAnswerCurves(result_F_F[:, 0], result_F_F[:, 1])
 
-i = np.array([30, 60, 100, 720, 1440, 2880, 6480, 12480, 18240, 32400, 243697])
-for x in i:
-    y_FirstTrue = math.e ** (a_FirstTrue * x + b_FirstTrue)
-    y_FirstFalse = math.e ** (a_FirstFalse * x + b_FirstFalse)
-    # print(x, '分钟间隔后第一次正确、错误的情况下第3次答题正确率为', y_FirstTrue, y_FirstFalse)
 
-print('第1次正确,第2次正确的参数为：', 'a = ', a_FirstTrueSecondTrue, 'b = ', b_FirstTrueSecondTrue)
-print('第1次正确,第2次错误的参数为：', 'a = ', a_FirstTrueSecondFalse, 'b = ', b_FirstTrueSecondFalse)
-print('第1次错误,第2次正确的参数为：', 'a = ', a_FirstFalseSecondTrue, 'b = ', b_FirstFalseSecondTrue)
-print('第1次错误,第2次错误的参数为：', 'a = ', a_FirstFalseSecondFalse, 'b = ', b_FirstFalseSecondFalse)
+if __name__ =='__main__' :
+    print('该遗忘曲线的函数模型为 : y = e**(a * x + b) [注:y为记忆率]')
 
-##完成
+    i = np.array([30, 60, 100, 720, 1440, 2880, 6480, 12480, 18240, 32400, 243697])
+    for x in i:
+        y_FirstTrue = math.e ** (a_FirstTrue * x + b_FirstTrue)
+        y_FirstFalse = math.e ** (a_FirstFalse * x + b_FirstFalse)
+        # print(x, '分钟间隔后第1次正确、错误的情况下第2次答题正确率为', y_FirstTrue, y_FirstFalse)
+
+    print('第1次正确的参数为：', 'a = ', a_FirstTrue, 'b = ', b_FirstTrue)
+    print('第1次错误的参数为：', 'a = ', a_FirstFalse, 'b = ', b_FirstFalse)
+
+
+    i = np.array([30, 60, 100, 720, 1440, 2880, 6480, 12480, 18240, 32400, 243697])
+    for x in i:
+        y_FirstTrue = math.e ** (a_FirstTrue * x + b_FirstTrue)
+        y_FirstFalse = math.e ** (a_FirstFalse * x + b_FirstFalse)
+        # print(x, '分钟间隔后第一次正确、错误的情况下第3次答题正确率为', y_FirstTrue, y_FirstFalse)
+
+    print('第1次正确,第2次正确的参数为：', 'a = ', a_FirstTrueSecondTrue, 'b = ', b_FirstTrueSecondTrue)
+    print('第1次正确,第2次错误的参数为：', 'a = ', a_FirstTrueSecondFalse, 'b = ', b_FirstTrueSecondFalse)
+    print('第1次错误,第2次正确的参数为：', 'a = ', a_FirstFalseSecondTrue, 'b = ', b_FirstFalseSecondTrue)
+    print('第1次错误,第2次错误的参数为：', 'a = ', a_FirstFalseSecondFalse, 'b = ', b_FirstFalseSecondFalse)
+
+
+
+# <<<<<<< HEAD
+# ##完成
+# =======
+# >>>>>>> 3558b6620f448374d4242000364e400aace8ab72
 # if __name__ == 'main':
