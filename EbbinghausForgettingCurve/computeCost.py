@@ -1,3 +1,4 @@
+import csv
 import math
 
 import numpy as np
@@ -61,9 +62,12 @@ def computeCose(y_true, y_pred):
     print("MPD:", MPDArr[0])
     print("MGD:", MGDArr[0])
     print("MTD:", MTDArr[0])
+    return [MSEArr[0], RMSEArr[0], MAEArr[0], MAPEArr[0], SMAPEArr[0], R2Arr[0], MSLEArr[0], MedAEArr[0], EVSArr[0],
+            MaxErrArr[0], MPDArr[0], MGDArr[0], MTDArr[0]]
 
 
-def return_result(result, a, b, pre_result):
+def return_result(result, a, b):
+    pre_result = []
     result0 = [i[0] for i in result]
     result1 = [i[1] for i in result]
     result0 = np.array(result0)
@@ -73,30 +77,43 @@ def return_result(result, a, b, pre_result):
     for i in range(len(result)):
         preresult = math.e ** (a * result0[i] + b)
         pre_result.append(preresult)
-    computeCose(result1, pre_result)
+    return computeCose(result1, pre_result)
+
+
+def writeCSV(resultArr, HeadName):
+    # 将resultArr转置一下
+    resultArr = np.array(resultArr)
+    resultArr = resultArr.T
+    resultArr = resultArr.tolist()
+    # 先写第一列的评价指标名字
+    firstColumn = ["", 'MSE', 'RMSE', 'MAE', 'MAPE', 'SMAPE', 'R2', 'MSLE', 'MedAE', 'EVS', 'MaxErr', 'MPD', 'MGD',
+                   'MTD']
+    # 写入文件
+    with open('result.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow([""] + HeadName)
+        for i in range(len(resultArr)):
+            writer.writerow([firstColumn[i + 1]] + resultArr[i])
 
 
 if __name__ == '__main__':
+    coseResult = [0, 0, 0, 0, 0, 0]
     print('第一次做对，第二次作答的曲线拟合指标：')
-    pre_result = []
-    return_result(Eb.result_T, Eb.a_FirstTrue, Eb.b_FirstTrue, pre_result)
-
+    coseResult[0] = return_result(Eb.result_T, Eb.a_FirstTrue, Eb.b_FirstTrue)
+    # writeCSV(coseResult, 'FirstTrue')
     print('第一次做错，第二次作答的曲线拟合指标：')
-    pre_result = []
-    return_result(Eb.result_F, Eb.a_FirstFalse, Eb.b_FirstFalse, pre_result)
-
+    coseResult[1] = return_result(Eb.result_F, Eb.a_FirstFalse, Eb.b_FirstFalse)
+    # writeCSV(coseResult, 'FirstFalse')
     print('第一次做对，第二次做对，第三次作答的曲线拟合指标：')
-    pre_result = []
-    return_result(Eb.result_T_T, Eb.a_FirstTrueSecondTrue, Eb.b_FirstTrueSecondTrue, pre_result)
-
+    coseResult[2] = return_result(Eb.result_T_T, Eb.a_FirstTrueSecondTrue, Eb.b_FirstTrueSecondTrue)
+    # writeCSV(coseResult, 'FirstTrueSecondTrue')
     print('第一次做对，第二次做错，第三次作答的曲线拟合指标：')
-    pre_result = []
-    return_result(Eb.result_T_F, Eb.a_FirstTrueSecondFalse, Eb.b_FirstTrueSecondFalse, pre_result)
-
+    coseResult[3] = return_result(Eb.result_T_F, Eb.a_FirstTrueSecondFalse, Eb.b_FirstTrueSecondFalse)
+    # writeCSV(coseResult, 'FirstTrueSecondFalse')
     print('第一次做错，第二次做对，第三次作答的曲线拟合指标：')
-    pre_result = []
-    return_result(Eb.result_F_T, Eb.a_FirstFalseSecondTrue, Eb.b_FirstFalseSecondTrue, pre_result)
-
+    coseResult[4] = return_result(Eb.result_F_T, Eb.a_FirstFalseSecondTrue, Eb.b_FirstFalseSecondTrue)
+    # writeCSV(coseResult, 'FirstFalseSecondTrue')
     print('第一次做错，第二次做错，第三次作答的曲线拟合指标：')
-    pre_result = []
-    return_result(Eb.result_F_F, Eb.a_FirstFalseSecondFalse, Eb.b_FirstFalseSecondFalse, pre_result)
+    coseResult[5] = return_result(Eb.result_F_F, Eb.a_FirstFalseSecondFalse, Eb.b_FirstFalseSecondFalse)
+    writeCSV(coseResult,
+             ["第一次对", "第一次错", "第一次对第二次对", "第一次对第二次错", "第一次错第二次对", "第一次错第二次错"])
