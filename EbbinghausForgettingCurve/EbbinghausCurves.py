@@ -342,17 +342,51 @@ a_FirstTrueSecondFalse, b_FirstTrueSecondFalse = TwoAnswerCurves(result_T_F[:, 0
 a_FirstFalseSecondTrue, b_FirstFalseSecondTrue = TwoAnswerCurves(result_F_T[:, 0], result_F_T[:, 1])
 a_FirstFalseSecondFalse, b_FirstFalseSecondFalse = TwoAnswerCurves(result_F_F[:, 0], result_F_F[:, 1])
 
+result_T_1 = np.delete(result_T,[9,10],axis=0)
+result_F_1 = np.delete(result_F,[9,10],axis=0)
+
+T_result = (result_T_1*0.6 +result_T_T*0.25+result_F_T*0.15)/3
+F_result = (result_F_1*0.6+result_T_F*0.15+result_F_F*0.25)/3
+
+
+a_zonghe_firsttrue,b_zonghefirsttrue = TwoAnswerCurves(T_result[:,0],T_result[:,1])
+a_zonghe_firstfalse,b_zonghefirstfalse  = TwoAnswerCurves(F_result[:,0],F_result[:,1])
+
+import xlwt
+
+myparameter = xlwt.Workbook(encoding='utf-8',style_compression=0)
+
+sheet = myparameter.add_sheet('曲线参数表',cell_overwrite_ok=True)
+col = ('图像名称','参数a','参数b')
+for i in range(0,3):
+    sheet.write(0,i,col[i])
+
+datalist = [['第一次做对',a_FirstTrue,b_FirstTrue],['第一次做错',a_FirstFalse,b_FirstFalse],['第一次做对，第二次做对',a_FirstTrueSecondTrue,b_FirstTrueSecondTrue],['第一次做对，第二次做错',a_FirstTrueSecondFalse,b_FirstTrueSecondFalse],['第一次做错，第二次做对',a_FirstFalseSecondTrue,b_FirstFalseSecondTrue],['第一次做错，第二次做错',a_FirstFalseSecondFalse,b_FirstFalseSecondFalse]]
+
+for i in range(0,6):
+    data = datalist[i]
+    for j in range(0,3):
+        sheet.write(i+1,j,data[j])
+
+# savepath = 'D:/excel.xls'
+# myparameter.save(savepath)
+
+
+
+
 
 if __name__ =='__main__' :
     print('该遗忘曲线的函数模型为 : y = e**(a * x + b) [注:y为记忆率]')
 
+    print('当该题库的刷题记录大于2万时：')
     i = np.array([30, 60, 100, 720, 1440, 2880, 6480, 12480, 18240, 32400, 243697])
     for x in i:
         y_FirstTrue = math.e ** (a_FirstTrue * x + b_FirstTrue)
         y_FirstFalse = math.e ** (a_FirstFalse * x + b_FirstFalse)
         # print(x, '分钟间隔后第1次正确、错误的情况下第2次答题正确率为', y_FirstTrue, y_FirstFalse)
 
-    print('第1次正确的参数为：', 'a = ', a_FirstTrue, 'b = ', b_FirstTrue)
+    print('第1次正确的参数为：', 'a = ', a_FirstTrue, 'b = ', b_FirstTrue )
+    # print('绘制出其图像为：')
     print('第1次错误的参数为：', 'a = ', a_FirstFalse, 'b = ', b_FirstFalse)
 
 
@@ -366,6 +400,12 @@ if __name__ =='__main__' :
     print('第1次正确,第2次错误的参数为：', 'a = ', a_FirstTrueSecondFalse, 'b = ', b_FirstTrueSecondFalse)
     print('第1次错误,第2次正确的参数为：', 'a = ', a_FirstFalseSecondTrue, 'b = ', b_FirstFalseSecondTrue)
     print('第1次错误,第2次错误的参数为：', 'a = ', a_FirstFalseSecondFalse, 'b = ', b_FirstFalseSecondFalse)
+
+
+    print('当该题库的刷题记录小于2万时：')
+    print('前一次作对时的参数为：','a = ',a_zonghe_firsttrue,'b = ',b_zonghefirsttrue)
+    print('前一次作错时的参数为：', 'a = ', a_zonghe_firstfalse, 'b = ', b_zonghefirstfalse)
+
 
 
 
