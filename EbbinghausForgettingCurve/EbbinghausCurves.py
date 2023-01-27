@@ -39,9 +39,9 @@ Second_TimesData = np.array(Second_TimesData)
 # print(Second_TimesData)
 #
 ##打印时间间隔的长度
-# print(max(Second_TimesData[:, 2]))
-# print(max(Third_TimesData[:, 3]))
-# print(max(Third_TimesData[:, 4]))
+print(max(Second_TimesData[:, 2]))
+print(max(Third_TimesData[:, 3]))
+print(max(Third_TimesData[:, 4]))
 
 
 # 打印第三次的最终结构化数组
@@ -93,10 +93,10 @@ DiscretizedSecondTimesData_T, DiscretizedSecondTimesData_F, count_T_sec, count_F
 ##自定义答过三次题目的离散化
 def Customize_Discretized_Timestamp_ThirdTimes(data):
     StandardTimeStamp = [0, 10, 30, 60, 720, 1440, 2880, 10080, 14880,
-                         23040, ]  # 分别代表10分钟、30分钟、60分钟、12小时、1天、2天、7天、十天、16天(最大)
+                         21600, 43200,63560 ]  # 分别代表10分钟、30分钟、60分钟、12小时、1天、2天、7天、十天、16天(最大)
     se_TimeStamp = pd.Series(data[:, 4])
     se1 = pd.cut(se_TimeStamp, StandardTimeStamp, right=False,
-                 labels=[10, 30, 60, 720, 1440, 2880, 6480, 12480, 18960])
+                 labels=[10, 30, 60, 720, 1440, 2880, 6480, 12480, 18240,32400,63560])
     count = pd.value_counts(se1)
     se1 = np.array(se1)
     # print(se1)
@@ -138,10 +138,22 @@ def Customize_Discretized_Timestamp_ThirdTimes(data):
 DiscretizedThirdTimesData_T_T, DiscretizedThirdTimesData_T_F, DiscretizedThirdTimesData_F_T, DiscretizedThirdTimesData_F_F, count_T_T_Third, count_T_F_Third, count_F_T_Third, count_F_F_Third = Customize_Discretized_Timestamp_ThirdTimes(
     Third_TimesData)
 
-
+# print(DiscretizedThirdTimesData_F_F)
 ##定义2次答题的返回的离散化的y和其对应的x
 def return_t_y_third(data):
-    dic = {}
+    dic = {
+        10: 0,
+        30: 0,
+        60: 0,
+        720: 0,
+        1440: 0,
+        2880: 0,
+        6480: 0,
+        12480: 0,
+        18240: 0,
+        32400: 0,
+        63560: 0
+    }
     dic_T = {
         10: 0,
         30: 0,
@@ -151,17 +163,18 @@ def return_t_y_third(data):
         2880: 0,
         6480: 0,
         12480: 0,
-        18960: 0,
+        18240 : 0 ,
+        32400 : 0,
+        63560 : 0
 
     }
     for i in data[:, 1]:
         if i in dic:
             dic[i] = dic[i] + 1
-        else:
-            dic[i] = 1
     for i in range(len(data)):
         if data[i][0] == 1:
             dic_T[data[i][1]] = dic_T[data[i][1]] + 1
+
     # print(dic)
     # print(dic_T)
     return dic, dic_T
@@ -176,10 +189,13 @@ ThirdTimesCountFF, ThirdTimesAnswersFFT = return_t_y_third(DiscretizedThirdTimes
 # 定义三次答题的返回其正确率和对应时间的函数
 def returntxandy_Third(x, y):
     dic = {}
-    arr = [10, 30, 30, 60, 720, 1440, 2880, 6480, 12480, 18960, ]
+    arr = [10, 30, 30, 60, 720, 1440, 2880, 6480, 12480,18240,32400,63560]
     arr = np.array(arr)
     for i in arr:
-        dic[i] = x[i] / y[i]
+        if y[i] == 0:
+            dic[i] = 1
+        else:
+            dic[i] = x[i] / y[i]
     return dic
 
 
@@ -342,15 +358,15 @@ a_FirstTrueSecondFalse, b_FirstTrueSecondFalse = TwoAnswerCurves(result_T_F[:, 0
 a_FirstFalseSecondTrue, b_FirstFalseSecondTrue = TwoAnswerCurves(result_F_T[:, 0], result_F_T[:, 1])
 a_FirstFalseSecondFalse, b_FirstFalseSecondFalse = TwoAnswerCurves(result_F_F[:, 0], result_F_F[:, 1])
 
-result_T_1 = np.delete(result_T,[9,10],axis=0)
-result_F_1 = np.delete(result_F,[9,10],axis=0)
+# result_T_1 = np.delete(result_T,[9,10],axis=0)
+# result_F_1 = np.delete(result_F,[9,10],axis=0)
+#
+# T_result = (result_T_1*0.6 +result_T_T*0.25+result_F_T*0.15)/3
+# F_result = (result_F_1*0.6+result_T_F*0.15+result_F_F*0.25)/3
 
-T_result = (result_T_1*0.6 +result_T_T*0.25+result_F_T*0.15)/3
-F_result = (result_F_1*0.6+result_T_F*0.15+result_F_F*0.25)/3
 
-
-a_zonghe_firsttrue,b_zonghefirsttrue = TwoAnswerCurves(T_result[:,0],T_result[:,1])
-a_zonghe_firstfalse,b_zonghefirstfalse  = TwoAnswerCurves(F_result[:,0],F_result[:,1])
+# a_zonghe_firsttrue,b_zonghefirsttrue = TwoAnswerCurves(T_result[:,0],T_result[:,1])
+# a_zonghe_firstfalse,b_zonghefirstfalse  = TwoAnswerCurves(F_result[:,0],F_result[:,1])
 
 import xlwt
 
@@ -402,9 +418,9 @@ if __name__ =='__main__' :
     print('第1次错误,第2次错误的参数为：', 'a = ', a_FirstFalseSecondFalse, 'b = ', b_FirstFalseSecondFalse)
 
 
-    print('当该题库的刷题记录小于2万时：')
-    print('前一次作对时的参数为：','a = ',a_zonghe_firsttrue,'b = ',b_zonghefirsttrue)
-    print('前一次作错时的参数为：', 'a = ', a_zonghe_firstfalse, 'b = ', b_zonghefirstfalse)
+    # print('当该题库的刷题记录小于2万时：')
+    # print('前一次作对时的参数为：','a = ',a_zonghe_firsttrue,'b = ',b_zonghefirsttrue)
+    # print('前一次作错时的参数为：', 'a = ', a_zonghe_firstfalse, 'b = ', b_zonghefirstfalse)
 
 
 
