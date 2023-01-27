@@ -39,9 +39,9 @@ Second_TimesData = np.array(Second_TimesData)
 # print(Second_TimesData)
 #
 ##打印时间间隔的长度
-print(max(Second_TimesData[:, 2]))
-print(max(Third_TimesData[:, 3]))
-print(max(Third_TimesData[:, 4]))
+# print(max(Second_TimesData[:, 2]))
+# print(max(Third_TimesData[:, 3]))
+# print(max(Third_TimesData[:, 4]))
 
 
 # 打印第三次的最终结构化数组
@@ -215,7 +215,7 @@ def accuacry(a):
     a = a.items()
     a = list(a)
     a = np.array(a)
-    for i in range(1, 9):
+    for i in range(1, 11):
         while a[i][1] > a[i - 1][1]:
             a[i][1] = a[i][1] - 0.01
     return a

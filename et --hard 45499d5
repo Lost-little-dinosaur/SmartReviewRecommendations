@@ -1,0 +1,68 @@
+[33md0d5a9c[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: commit: Update
+[33m5394f98[m HEAD@{1}: pull: Fast-forward
+[33m5e5acec[m HEAD@{2}: commit: update pictures's Axis
+[33m09badc1[m HEAD@{3}: commit: update curves and parameters save in excel
+[33m89d71c7[m HEAD@{4}: commit (merge): update computeConst.py
+[33me2e890c[m HEAD@{5}: reset: moving to HEAD
+[33me2e890c[m HEAD@{6}: reset: moving to HEAD
+[33me2e890c[m HEAD@{7}: checkout: moving from Ebbinghaus_fun to main
+[33m45499d5[m[33m ([m[1;31morigin/Ebbinghaus_fun[m[33m, [m[1;32mEbbinghaus_fun[m[33m)[m HEAD@{8}: commit: Updates 6*2 paragrams of forgettingcurves
+[33m4ad56d8[m HEAD@{9}: checkout: moving from main to Ebbinghaus_fun
+[33me2e890c[m HEAD@{10}: commit: Updates
+[33m746bd0b[m HEAD@{11}: checkout: moving from Ebbinghaus_fun to main
+[33m4ad56d8[m HEAD@{12}: reset: moving to HEAD
+[33m4ad56d8[m HEAD@{13}: checkout: moving from main to Ebbinghaus_fun
+[33m746bd0b[m HEAD@{14}: commit: Updates six paragrams of the forgettingcurves
+[33mc65125c[m HEAD@{15}: checkout: moving from Ebbinghaus_fun to main
+[33m4ad56d8[m HEAD@{16}: reset: moving to HEAD
+[33m4ad56d8[m HEAD@{17}: commit: update First True params:a,b
+[33m2da2463[m HEAD@{18}: checkout: moving from main to Ebbinghaus_fun
+[33mc65125c[m HEAD@{19}: pull: Fast-forward
+[33mc6c474f[m HEAD@{20}: reset: moving to HEAD
+[33mc6c474f[m HEAD@{21}: pull: Fast-forward
+[33md460fc2[m HEAD@{22}: checkout: moving from Ebbinghaus_fun to main
+[33m2da2463[m HEAD@{23}: checkout: moving from main to Ebbinghaus_fun
+[33md460fc2[m HEAD@{24}: checkout: moving from dinosaur to main
+[33mbdbe463[m[33m ([m[1;32mdinosaur[m[33m)[m HEAD@{25}: checkout: moving from main to dinosaur
+[33md460fc2[m HEAD@{26}: reset: moving to HEAD
+[33md460fc2[m HEAD@{27}: pull: Fast-forward
+[33mbdbe463[m[33m ([m[1;32mdinosaur[m[33m)[m HEAD@{28}: checkout: moving from Ebbinghaus_fun to main
+[33m2da2463[m HEAD@{29}: reset: moving to HEAD
+[33m2da2463[m HEAD@{30}: commit: update some errors
+[33m709e338[m HEAD@{31}: commit: 上传第一次，初步构造连续错两次，一错一对的参数返回函数
+[33mbdbe463[m[33m ([m[1;32mdinosaur[m[33m)[m HEAD@{32}: checkout: moving from main to Ebbinghaus_fun
+[33mbdbe463[m[33m ([m[1;32mdinosaur[m[33m)[m HEAD@{33}: clone: from https://github.com/Lost-little-dinosaur/SmartReviewRecommendations.git
+[33md0d5a9c[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: commit: Update
+[33m5394f98[m HEAD@{1}: pull: Fast-forward
+[33m5e5acec[m HEAD@{2}: commit: update pictures's Axis
+[33m09badc1[m HEAD@{3}: commit: update curves and parameters save in excel
+[33m89d71c7[m HEAD@{4}: commit (merge): update computeConst.py
+[33me2e890c[m HEAD@{5}: reset: moving to HEAD
+[33me2e890c[m HEAD@{6}: reset: moving to HEAD
+[33me2e890c[m HEAD@{7}: checkout: moving from Ebbinghaus_fun to main
+[33m45499d5[m[33m ([m[1;31morigin/Ebbinghaus_fun[m[33m, [m[1;32mEbbinghaus_fun[m[33m)[m HEAD@{8}: commit: Updates 6*2 paragrams of forgettingcurves
+[33m4ad56d8[m HEAD@{9}: checkout: moving from main to Ebbinghaus_fun
+[33me2e890c[m HEAD@{10}: commit: Updates
+[33m746bd0b[m HEAD@{11}: checkout: moving from Ebbinghaus_fun to main
+[33m4ad56d8[m HEAD@{12}: reset: moving to HEAD
+[33m4ad56d8[m HEAD@{13}: checkout: moving from main to Ebbinghaus_fun
+[33m746bd0b[m HEAD@{14}: commit: Updates six paragrams of the forgettingcurves
+[33mc65125c[m HEAD@{15}: checkout: moving from Ebbinghaus_fun to main
+[33m4ad56d8[m HEAD@{16}: reset: moving to HEAD
+[33m4ad56d8[m HEAD@{17}: commit: update First True params:a,b
+[33m2da2463[m HEAD@{18}: checkout: moving from main to Ebbinghaus_fun
+[33mc65125c[m HEAD@{19}: pull: Fast-forward
+[33mc6c474f[m HEAD@{20}: reset: moving to HEAD
+[33mc6c474f[m HEAD@{21}: pull: Fast-forward
+[33md460fc2[m HEAD@{22}: checkout: moving from Ebbinghaus_fun to main
+[33m2da2463[m HEAD@{23}: checkout: moving from main to Ebbinghaus_fun
+[33md460fc2[m HEAD@{24}: checkout: moving from dinosaur to main
+[33mbdbe463[m[33m ([m[1;32mdinosaur[m[33m)[m HEAD@{25}: checkout: moving from main to dinosaur
+[33md460fc2[m HEAD@{26}: reset: moving to HEAD
+[33md460fc2[m HEAD@{27}: pull: Fast-forward
+[33mbdbe463[m[33m ([m[1;32mdinosaur[m[33m)[m HEAD@{28}: checkout: moving from Ebbinghaus_fun to main
+[33m2da2463[m HEAD@{29}: reset: moving to HEAD
+[33m2da2463[m HEAD@{30}: commit: update some errors
+[33m709e338[m HEAD@{31}: commit: 上传第一次，初步构造连续错两次，一错一对的参数返回函数
+[33mbdbe463[m[33m ([m[1;32mdinosaur[m[33m)[m HEAD@{32}: checkout: moving from main to Ebbinghaus_fun
+[33mbdbe463[m[33m ([m[1;32mdinosaur[m[33m)[m HEAD@{33}: clone: from https://github.com/Lost-little-dinosaur/SmartReviewRecommendations.git
