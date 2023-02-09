@@ -93,10 +93,10 @@ DiscretizedSecondTimesData_T, DiscretizedSecondTimesData_F, count_T_sec, count_F
 ##自定义答过三次题目的离散化
 def Customize_Discretized_Timestamp_ThirdTimes(data):
     StandardTimeStamp = [0, 10, 30, 60, 720, 1440, 2880, 10080, 14880,
-                         21600, 43200,63560 ]  # 分别代表10分钟、30分钟、60分钟、12小时、1天、2天、7天、十天、16天(最大)
+                         21600, 43200, 63560]  # 分别代表10分钟、30分钟、60分钟、12小时、1天、2天、7天、十天、16天(最大)
     se_TimeStamp = pd.Series(data[:, 4])
     se1 = pd.cut(se_TimeStamp, StandardTimeStamp, right=False,
-                 labels=[10, 30, 60, 720, 1440, 2880, 6480, 12480, 18240,32400,63560])
+                 labels=[10, 30, 60, 720, 1440, 2880, 6480, 12480, 18240, 32400, 63560])
     count = pd.value_counts(se1)
     se1 = np.array(se1)
     # print(se1)
@@ -138,6 +138,7 @@ def Customize_Discretized_Timestamp_ThirdTimes(data):
 DiscretizedThirdTimesData_T_T, DiscretizedThirdTimesData_T_F, DiscretizedThirdTimesData_F_T, DiscretizedThirdTimesData_F_F, count_T_T_Third, count_T_F_Third, count_F_T_Third, count_F_F_Third = Customize_Discretized_Timestamp_ThirdTimes(
     Third_TimesData)
 
+
 # print(DiscretizedThirdTimesData_F_F)
 ##定义2次答题的返回的离散化的y和其对应的x
 def return_t_y_third(data):
@@ -163,9 +164,9 @@ def return_t_y_third(data):
         2880: 0,
         6480: 0,
         12480: 0,
-        18240 : 0 ,
-        32400 : 0,
-        63560 : 0
+        18240: 0,
+        32400: 0,
+        63560: 0
 
     }
     for i in data[:, 1]:
@@ -189,7 +190,7 @@ ThirdTimesCountFF, ThirdTimesAnswersFFT = return_t_y_third(DiscretizedThirdTimes
 # 定义三次答题的返回其正确率和对应时间的函数
 def returntxandy_Third(x, y):
     dic = {}
-    arr = [10, 30, 30, 60, 720, 1440, 2880, 6480, 12480,18240,32400,63560]
+    arr = [10, 30, 30, 60, 720, 1440, 2880, 6480, 12480, 18240, 32400, 63560]
     arr = np.array(arr)
     for i in arr:
         if y[i] == 0:
@@ -348,7 +349,7 @@ def TwoAnswerCurves(data1, data2):
     return popt[0], popt[1]
 
 
- ##第2次答题最终的参数确定和部分时间间隔的输出测试
+##第2次答题最终的参数确定和部分时间间隔的输出测试
 a_FirstTrue, b_FirstTrue = TwoAnswerCurves(result_T[:, 0], result_T[:, 1])
 a_FirstFalse, b_FirstFalse = TwoAnswerCurves(result_F[:, 0], result_F[:, 1])
 
@@ -370,28 +371,29 @@ a_FirstFalseSecondFalse, b_FirstFalseSecondFalse = TwoAnswerCurves(result_F_F[:,
 
 import xlwt
 
-myparameter = xlwt.Workbook(encoding='utf-8',style_compression=0)
+myparameter = xlwt.Workbook(encoding='utf-8', style_compression=0)
 
-sheet = myparameter.add_sheet('曲线参数表',cell_overwrite_ok=True)
-col = ('图像名称','参数a','参数b')
-for i in range(0,3):
-    sheet.write(0,i,col[i])
+sheet = myparameter.add_sheet('曲线参数表', cell_overwrite_ok=True)
+col = ('图像名称', '参数a', '参数b')
+for i in range(0, 3):
+    sheet.write(0, i, col[i])
 
-datalist = [['第一次做对',a_FirstTrue,b_FirstTrue],['第一次做错',a_FirstFalse,b_FirstFalse],['第一次做对，第二次做对',a_FirstTrueSecondTrue,b_FirstTrueSecondTrue],['第一次做对，第二次做错',a_FirstTrueSecondFalse,b_FirstTrueSecondFalse],['第一次做错，第二次做对',a_FirstFalseSecondTrue,b_FirstFalseSecondTrue],['第一次做错，第二次做错',a_FirstFalseSecondFalse,b_FirstFalseSecondFalse]]
+datalist = [['第一次做对', a_FirstTrue, b_FirstTrue], ['第一次做错', a_FirstFalse, b_FirstFalse],
+            ['第一次做对，第二次做对', a_FirstTrueSecondTrue, b_FirstTrueSecondTrue],
+            ['第一次做对，第二次做错', a_FirstTrueSecondFalse, b_FirstTrueSecondFalse],
+            ['第一次做错，第二次做对', a_FirstFalseSecondTrue, b_FirstFalseSecondTrue],
+            ['第一次做错，第二次做错', a_FirstFalseSecondFalse, b_FirstFalseSecondFalse]]
 
-for i in range(0,6):
+for i in range(0, 6):
     data = datalist[i]
-    for j in range(0,3):
-        sheet.write(i+1,j,data[j])
+    for j in range(0, 3):
+        sheet.write(i + 1, j, data[j])
 
 # savepath = 'D:/excel.xls'
 # myparameter.save(savepath)
 
 
-
-
-
-if __name__ =='__main__' :
+if __name__ == '__main__':
     print('该遗忘曲线的函数模型为 : y = e**(a * x + b) [注:y为记忆率]')
 
     print('当该题库的刷题记录大于2万时：')
@@ -401,10 +403,9 @@ if __name__ =='__main__' :
         y_FirstFalse = math.e ** (a_FirstFalse * x + b_FirstFalse)
         # print(x, '分钟间隔后第1次正确、错误的情况下第2次答题正确率为', y_FirstTrue, y_FirstFalse)
 
-    print('第1次正确的参数为：', 'a = ', a_FirstTrue, 'b = ', b_FirstTrue )
+    print('第1次正确的参数为：', 'a = ', a_FirstTrue, 'b = ', b_FirstTrue)
     # print('绘制出其图像为：')
     print('第1次错误的参数为：', 'a = ', a_FirstFalse, 'b = ', b_FirstFalse)
-
 
     i = np.array([30, 60, 100, 720, 1440, 2880, 6480, 12480, 18240, 32400, 243697])
     for x in i:
@@ -417,13 +418,9 @@ if __name__ =='__main__' :
     print('第1次错误,第2次正确的参数为：', 'a = ', a_FirstFalseSecondTrue, 'b = ', b_FirstFalseSecondTrue)
     print('第1次错误,第2次错误的参数为：', 'a = ', a_FirstFalseSecondFalse, 'b = ', b_FirstFalseSecondFalse)
 
-
     # print('当该题库的刷题记录小于2万时：')
     # print('前一次作对时的参数为：','a = ',a_zonghe_firsttrue,'b = ',b_zonghefirsttrue)
     # print('前一次作错时的参数为：', 'a = ', a_zonghe_firstfalse, 'b = ', b_zonghefirstfalse)
-
-
-
 
 # <<<<<<< HEAD
 # ##完成

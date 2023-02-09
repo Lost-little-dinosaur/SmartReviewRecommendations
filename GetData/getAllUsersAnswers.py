@@ -23,10 +23,10 @@ import time
 def getAllUsersAnswerList():  # 返回一个数组，每一个元素代表一个用户的答题情况，每一个元素是一个数组，数组中的每一个元素代表一个问题的答题情况，其中包含是否正确和答题时间
     # 数据库连接
     # 打开数据库连接
-    db = pymysql.connect(host='sh-cdb-gn1fgn8u.sql.tencentcdb.com',
-                         port=58976,
-                         user='pinnacle_viewer',
-                         password='VbfXD75GUh6u6ivFL9FMJrN4',
+    db = pymysql.connect(host='rm-bp1bc34p4d5tr12n7uo.mysql.rds.aliyuncs.com',
+                         port=3306,
+                         user='pinnacle',
+                         password='anEN4zwJmDha3fGBbuhzFE7p',
                          database='pinnacle')
     # db = pymysql.connect(host='127.0.0.1',
     #                      port=3306,
