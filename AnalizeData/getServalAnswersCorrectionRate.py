@@ -14,13 +14,13 @@ def main():
     for eachAnswerQuestionSetDict in SeveralAnswerQuestionSetDict:
         allSituationsCorrectRate[eachAnswerQuestionSetDict] = getThisSituationCorrectRate(
             SeveralAnswerQuestionSetDict[eachAnswerQuestionSetDict])
-    # print(allSituationsCorrectRate)
+    print(allSituationsCorrectRate)  # 得到了所有情况的正确率
 
     classifySituationsCorrectRate = {}
     for eachAnswerQuestionSetDict in SeveralAnswerQuestionSetDict:
         classifySituationsCorrectRate[eachAnswerQuestionSetDict] = classifyThisSituationCorrectRate(
             allSituationsCorrectRate[eachAnswerQuestionSetDict])
-    print(classifySituationsCorrectRate)
+    print(classifySituationsCorrectRate)  # 对所有情况的正确率进行分类
 
     # 计算方差
     varianceSituationsCorrectRate = {}
@@ -29,7 +29,7 @@ def main():
         for eachClassify in classifySituationsCorrectRate[eachAnswerQuestionSetDict].keys():
             varianceSituationsCorrectRate[eachAnswerQuestionSetDict][eachClassify] = getVariance(
                 classifySituationsCorrectRate[eachAnswerQuestionSetDict][eachClassify])
-    print(varianceSituationsCorrectRate)
+    print(varianceSituationsCorrectRate)  # 得到了所有情况的正确率的方差
 
 
 def getThisSituationCorrectRate(thisSituationAnswerList):  # 获取所有情况的正确率
