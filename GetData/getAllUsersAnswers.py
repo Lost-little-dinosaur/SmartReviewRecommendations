@@ -1,4 +1,5 @@
 import json
+import os
 import pickle
 
 import pymysql
@@ -80,7 +81,7 @@ def getAllUsersAnswerList():  # 返回一个数组，每一个元素代表一个
         # 画图
         # plt.hist(countArr, bins=100)
         # plt.show()
-        print("筛选掉了少于等于10条答题记录的用户，剩余用户数目为：", len(userIDArr), "，筛选掉了",
+        print("筛选掉了少于等于10条答题记录的用户，剩余用户数目为：", len(tempUserIDArr), "，筛选掉了",
               len(userIDArr) - len(tempUserIDArr), "个用户")
         userIDArr = tempUserIDArr
         # print(userIDArr)
@@ -118,12 +119,20 @@ def getAllUsersAnswerList():  # 返回一个数组，每一个元素代表一个
 
 
 if __name__ == '__main__':
+    dirPath = "allUsersAnswers/"
+
+    # 保存
     questionSetUserAnswerArr = getAllUsersAnswerList()
     # 将变量userAnswerArr序列化到本地
-    dirPath = "allUsersAnswers/"
     for each in questionSetUserAnswerArr.keys():
         with open(dirPath + each + '.pkl', 'wb') as f:
             pickle.dump(questionSetUserAnswerArr[each], f)
+
+    # 读取
+    # for eachFileName in os.listdir(dirPath):
+    #     with open(dirPath + eachFileName, 'rb') as f:
+    #         temp = pickle.load(f)
+    #         print(eachFileName, len(temp))
     # 将变量questionSetUserAnswerArr反序列化到本地
     # for each in questionSetUserAnswerArr.keys():
 # temp = getAllQuestions()

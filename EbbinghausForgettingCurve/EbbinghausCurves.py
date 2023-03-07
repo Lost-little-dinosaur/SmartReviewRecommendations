@@ -8,7 +8,7 @@ from sklearn.cluster import KMeans
 
 np.set_printoptions(threshold=np.inf)
 
-dirPath = "../GetData/TwoThreeAnswerQuestionSetDict/"
+dirPath = "../GetData/SeveralAnswerQuestionSetDict/"
 
 with open(dirPath + 'ThreeAnswerList.pkl', 'rb') as f1:
     ThreeAnswerData = pickle.load(f1)

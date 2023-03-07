@@ -5,9 +5,10 @@ import pickle
 
 
 def getTwoThreeAnswerList():
+    severalAnswerQuestionSetDict = {}
     twoAnswerQuestionSetDict = {}
     threeAnswerQuestionSetDict = {}
-    dirPath = "AllUsersAnswers/"
+    dirPath = "AllUsersAnswers-old/"
     for each in os.listdir(dirPath):
         with open(dirPath + each, 'rb') as f:
             twoAnswerArr = []
@@ -37,9 +38,10 @@ def getTwoThreeAnswerList():
 
 
 if __name__ == '__main__':
-    twoAnswerQuestionSetDict, threeAnswerQuestionSetDict = getTwoThreeAnswerList()
+    # 第一层是题库，第二层是每道题的答题记录数组，这个数组里依次存放的是[第一次正确与否、第二次正确与否、第三次正确与否、第一次与第二次的时间间隔、第二次与第三次的时间间隔]
+    twoAnswerQuestionSetDict, threeAnswerQuestionSetDict = getTwoThreeAnswerList()  # 第一层是题库，第二层是每道题的答题记录数组，这个数组里依次存放的是[第一次正确与否、第二次正确与否、第三次正确与否、第一次与第二次的时间间隔、第二次与第三次的时间间隔]
     # 将变量userAnswerArr序列化到本地
-    dirPath = "TwoThreeAnswerQuestionSetDict/"
+    dirPath = "SeveralAnswerQuestionSetDict/"
     filePath = "TwoAnswerList.pkl"
     with open(dirPath + filePath, 'wb') as f:
         pickle.dump(twoAnswerQuestionSetDict, f)
