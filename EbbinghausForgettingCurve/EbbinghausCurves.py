@@ -17,26 +17,23 @@ with open(dirPath + 'ThreeAnswerList.pkl', 'rb') as f1:
 with open(dirPath + 'TwoAnswerList.pkl', 'rb') as f2:
     TwoAnswerData = pickle.load(f2)
     # print(TwoAnswerData)
-maogai_third_times = ThreeAnswerData.get('2021毛概题库.pkl')
-xigai_third_times = ThreeAnswerData.get('2022年习概题库.pkl')
-mayuan_third_times = ThreeAnswerData.get('2022年马原题库.pkl')
-safety_third_times = ThreeAnswerData.get('安全基本知识.pkl')
 
-Third_TimesData = maogai_third_times + xigai_third_times + mayuan_third_times + safety_third_times
-# print(Third_TimesData)
+Third_TimesData = []
+
+for ThreeKey in ThreeAnswerData.keys():
+    Third_TimesData += ThreeAnswerData.get(ThreeKey)  # 读取三次记录的所有题库的数据
+
 Third_TimesData = np.array(Third_TimesData)
 # print(Third_TimesData)
 
-maogai_second_times = TwoAnswerData.get('2021毛概题库.pkl')
-xigai_second_times = TwoAnswerData.get('2022年习概题库.pkl')
-mayuan_second_times = TwoAnswerData.get('2022年马原题库.pkl')
-safety_second_times = TwoAnswerData.get('安全基本知识.pkl')
 
-Second_TimesData = maogai_second_times + xigai_second_times + mayuan_second_times + safety_second_times
+Second_TimesData = []
+for Twokey in TwoAnswerData.keys():
+    Second_TimesData += TwoAnswerData.get(Twokey)  #读取两次记录的所有题库的数据
+# print(Second_TimesData)
+
 Second_TimesData = np.array(Second_TimesData)
 
-
-# print(Second_TimesData)
 #
 ##打印时间间隔的长度
 # print(max(Second_TimesData[:, 2]))
