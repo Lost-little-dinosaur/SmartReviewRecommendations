@@ -9,23 +9,22 @@ def getTwoThreeAnswerList():
     dirPath = "AllUsersAnswers/"
     for each in os.listdir(dirPath):
         with open(dirPath + each, 'rb') as f:
-            tempSeveralAnswerArr = []
             questionSetUserAnswerArr = pickle.load(f)
             # print(questionSetUserAnswerArr)
             for eachUserAnswer in questionSetUserAnswerArr:
-                for eachQuestion in eachUserAnswer.keys():
-                    tempArr = eachUserAnswer[eachQuestion]
+                for eachQuestionID in eachUserAnswer.keys():
+                    tempArr = eachUserAnswer[eachQuestionID]
                     # 按照时间戳升序排序
                     tempArr.sort(key=lambda x: x[1])
-                    answerCount = len(eachUserAnswer[eachQuestion])
+                    answerCount = len(eachUserAnswer[eachQuestionID])
                     for nowAnswerCount in range(2, answerCount + 1):
-                        tempSeveralAnswerArr.append(processSeveralAnswer(tempArr[:nowAnswerCount], nowAnswerCount,
-                                                                         severalAnswerQuestionSetDict))
+                        processSeveralAnswer(tempArr[:nowAnswerCount], nowAnswerCount, severalAnswerQuestionSetDict,
+                                             eachQuestionID)
 
     return severalAnswerQuestionSetDict
 
 
-def processSeveralAnswer(answerArr, nowAnswerCount, severalAnswerQuestionSetDict):
+def processSeveralAnswer(answerArr, nowAnswerCount, severalAnswerQuestionSetDict, eachQuestionID):
     if nowAnswerCount not in severalAnswerQuestionSetDict.keys():
         severalAnswerQuestionSetDict[nowAnswerCount] = []
     tempArr = []
@@ -33,7 +32,7 @@ def processSeveralAnswer(answerArr, nowAnswerCount, severalAnswerQuestionSetDict
         tempArr.append(answerArr[i][0])
     for i in range(nowAnswerCount - 1):
         tempArr.append(answerArr[i + 1][1] - answerArr[i][1])
-    severalAnswerQuestionSetDict[nowAnswerCount].append(tempArr)
+    severalAnswerQuestionSetDict[nowAnswerCount].append({eachQuestionID: tempArr})
 
 
 if __name__ == '__main__':
