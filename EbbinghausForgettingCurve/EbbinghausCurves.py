@@ -10,6 +10,8 @@ np.set_printoptions(threshold=np.inf)
 
 dirPath = "../GetData/SeveralAnswerQuestionSetDict/"
 
+
+
 with open(dirPath + 'ThreeAnswerList.pkl', 'rb') as f1:
     ThreeAnswerData = pickle.load(f1)
     # print(ThreeAnswerData)
