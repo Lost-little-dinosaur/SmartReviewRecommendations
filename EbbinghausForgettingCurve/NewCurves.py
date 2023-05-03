@@ -9,6 +9,8 @@ import math
 import scipy.stats as stats
 
 
+# import yaml
+
 def main():
     dirPath_SAQSD = '../GetData/SeveralAnswerQuestionSetDict/'
     dirPath_All_Correct_rate = '../GetData/AllQuestionsCorrectRate/'
@@ -30,6 +32,7 @@ def main():
             AllCorrectRate.update(CorrectRate)
 
     intervals = [(0, 5), (5, 20), (20, 60), (60, 540), (540, 1440), (1440, 8640), (8640, 44640)]
+
     intervals_list = [5, 20, 60, 540, 1440, 8640, 44640]
 
     # 调用函数，返回时间间隔的分钟数列表
@@ -196,16 +199,6 @@ def main():
     #
     result = Get_result(AllAnswerData4)
 
-    combined_result = []
-    for i in range(len(tempAllAnswerData1)):
-        sublist = []
-        k = i + 2
-        for j in range(k):
-            sublist.append(
-                [{0: [0, 0], 5: [0, 0], 20: [0, 0], 60: [0, 0], 540: [0, 0], 1440: [0, 0], 8640: [0, 0],
-                  44640: [0, 0]}])
-        combined_result.append(sublist)
-
     def cacu_num(result1):
         key_dict_list = []
         for i in range(len(result1)):
@@ -227,7 +220,16 @@ def main():
 
     key_dict = cacu_num(result)
 
-    def my_correct_rate(result1, result2, key_dict):
+    def my_correct_rate(result1, key_dict):
+        result2 = []
+        for i in range(len(tempAllAnswerData1)):
+            sublist = []
+            k = i + 2
+            for j in range(k):
+                sublist.append(
+                    [{0: [0, 0], 5: [0, 0], 20: [0, 0], 60: [0, 0], 540: [0, 0], 1440: [0, 0], 8640: [0, 0],
+                      44640: [0, 0]}])
+            result2.append(sublist)
         for i in range(len(result1)):
             # print(len(result1), len(result2))
             for j in range(len(result1[i])):
@@ -238,7 +240,8 @@ def main():
                         if len(result1[i][j]) >= 100:
                             key = next(iter(result1[i][j][k].keys()))
                             for key1 in keys_list:
-                                if key1 == key and key_dict[i][j][key] >= 100:
+                                # 此处为阈值，可以调节，目前是100个以上的点才会参与后续的计算
+                                if key1 == key and key_dict[i][j][key] >= 10:
                                     result2[i][j][h][key1][0] = result2[i][j][h][key1][0] + result1[i][j][k][key][0]
                                     result2[i][j][h][key1][1] = result2[i][j][h][key1][1] + result1[i][j][k][key][1]
                                 else:
@@ -246,7 +249,7 @@ def main():
                     # print(result2[i][j][h])
         return result2
 
-    my_cor_data = my_correct_rate(result, combined_result, key_dict)
+    my_cor_data = my_correct_rate(result, key_dict)
 
     def fun_correc_rate(corr_data):
         my_corr_rate = []
@@ -322,7 +325,7 @@ def main():
 
                     # print(new_lst, kept_indices)
                     new_time_list = [intervals_list[i] for i in kept_indices]
-                    print(new_lst, new_time_list)
+                    # print(new_lst, new_time_list)
                     new_time_list.insert(0, 0)
                     new_lst.insert(0, 1)
                     popt, pcov = curve_fit(func, new_time_list, new_lst, p0=(1, 0))
@@ -380,6 +383,45 @@ def main():
 
     plot_fitted_curves(Curves_paras, my_cor_rate_x_list, my_cor_rate_y_list)
 
+    def generate_yaml(paras):
+        newparas = {}
+        for i in range(len(paras)):
+            count = 0
+            # print(i+1," :",paras[i])
+            for j in range(i+2):
+                if len(paras[i][j]) == 0:
+                    count = count + 1
+                    paras[i][j].extend([-1,-1])
+                newparas[i] = [i+2-count,paras[i]]
+
+        data_dict = {key: val[1] for key, val in newparas.items()}
+        # print(data_dict)
+
+        def generate_data(paras):
+            data = []
+            for i in range(len(paras)):
+                data_dict = {}
+                for j in range(len(paras[i])):
+                    data_dict[j] = paras[i][j]
+                data.append(data_dict)
+            return data
+
+        data = generate_data(paras)
+        print(data)
+        #
+        forgetting_curve_parameters = {
+            "ForgettingCurveParameters": {
+                "conditionsNumber": len(paras),
+                "conditionDetailNumberArray": [i[0] for j in range(len(paras)) for i in newparas[j]],
+                "conditionsArray": data,
+            }
+        }
+
+        with open("output.yaml", "w") as yaml_file:
+            yaml.dump(forgetting_curve_parameters, yaml_file, default_flow_style=False, sort_keys=False)
+
+
+    generate_yaml(Curves_paras)
 
 if __name__ == '__main__':
     main()
