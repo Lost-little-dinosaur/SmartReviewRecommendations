@@ -9,8 +9,6 @@ import math
 import scipy.stats as stats
 
 
-# import yaml
-
 def main():
     dirPath_SAQSD = '../GetData/SeveralAnswerQuestionSetDict/'
     dirPath_All_Correct_rate = '../GetData/AllQuestionsCorrectRate/'
@@ -273,12 +271,12 @@ def main():
     def Fitring_curves(corr_rates, intervals_list):
         e = math.e
 
-        def func(x, a, b):
-            return e ** (a * x + b)
+        def func(x, a, b, c):
+            return e ** (a * x + b) + c
 
-        def exgaussian(x, mu, sigma, tau):
-            # Ex-Gaussian distribution function
-            return stats.norm.pdf(x - mu, scale=sigma) * stats.expon.pdf(x - mu, scale=tau)
+        # def exgaussian(x, mu, sigma, tau):
+        #     # Ex-Gaussian distribution function
+        #     return stats.norm.pdf(x - mu, scale=sigma) * stats.expon.pdf(x - mu, scale=tau)
 
         my_curves_para = []
         for i in range(len(corr_rates)):
@@ -328,37 +326,40 @@ def main():
                     # print(new_lst, new_time_list)
                     new_time_list.insert(0, 0)
                     new_lst.insert(0, 1)
-                    popt, pcov = curve_fit(func, new_time_list, new_lst, p0=(1, 0))
+                    # popt, pcov = curve_fit(func, new_time_list, new_lst, p0=(1, 0))
                     new_time_list = np.array(new_time_list)
                     new_time_list.astype(float)
                     new_lst = np.array(new_lst)
                     new_lst.astype(float)
-                    param_bounds = ([-np.inf, -np.inf], [0, 1])
+                    param_bounds = ([-np.inf, -np.inf, -np.inf], [0, 1, np.inf])
                     popt, pcov = curve_fit(func, new_time_list, new_lst, bounds=param_bounds)
                     my_curves_para[i][j].append(popt[0])
                     my_curves_para[i][j].append(popt[1])
+                    my_curves_para[i][j].append(popt[2])
                     my_curves_y_list[i][j].append(new_lst)
                     my_curves_x_list[i][j].append(new_time_list)
         return my_curves_para, my_curves_x_list, my_curves_y_list
 
     Curves_paras, my_cor_rate_x_list, my_cor_rate_y_list = Fitring_curves(my_cor_rate, intervals_list)
 
+    # print("paras:",Curves_paras,"x:",my_cor_rate_x_list,"y:",my_cor_rate_y_list)
     def plot_fitted_curves(paras, corr_x_list, corr_y_list):
         e = math.e
 
-        def func(x, a, b):
-            return e ** (a * x + b)
+        def func(x, a, b, c):
+            return e ** (a * x + b) + c
 
         for i in range(len(paras)):
             for j in range(len(paras[i])):
                 if paras[i][j]:
                     a = paras[i][j][0]
                     b = paras[i][j][1]
+                    c = paras[i][j][2]
                     print('做过', i + 1, '次的且错了', j, '道题目的遗忘率曲线参数为：', 'a = ', a, 'b = ',
-                          b)
+                          b, 'c = ', c)
                     x = np.linspace(0, 44640, 44640)
                     func_vec = np.vectorize(func)
-                    y = func_vec(x, a, b)
+                    y = func_vec(x, a, b, c)
                     fig, ax = plt.subplots()
                     # plot curve
                     ax.plot(x, y)
