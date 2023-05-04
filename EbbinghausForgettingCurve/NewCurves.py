@@ -388,13 +388,14 @@ def main():
         for i in range(len(paras)):
             count = 0
             # print(i+1," :",paras[i])
-            for j in range(i+2):
+            for j in range(i + 2):
                 if len(paras[i][j]) == 0:
                     count = count + 1
-                    paras[i][j].extend([-1,-1])
-                newparas[i] = [i+2-count,paras[i]]
+                    paras[i][j].extend([-1, -1])
+                newparas[i] = [i + 2 - count, paras[i]]
 
         data_dict = {key: val[1] for key, val in newparas.items()}
+
         # print(data_dict)
 
         def generate_data(paras):
@@ -407,21 +408,52 @@ def main():
             return data
 
         data = generate_data(paras)
-        print(data)
+        # print(data)
         #
-        forgetting_curve_parameters = {
-            "ForgettingCurveParameters": {
-                "conditionsNumber": len(paras),
-                "conditionDetailNumberArray": [i[0] for j in range(len(paras)) for i in newparas[j]],
-                "conditionsArray": data,
-            }
-        }
+        # forgetting_curve_parameters = {
+        #     "ForgettingCurveParameters": {
+        #         "conditionsNumber": len(paras),
+        #         "conditionDetailNumberArray": [i[0] for j in range(len(paras)) for i in newparas[j]],
+        #         "conditionsArray": data,
+        #     }
+        # }
+        # print(newparas)
+        # print(newparas[0])
 
         with open("output.yaml", "w") as yaml_file:
-            yaml.dump(forgetting_curve_parameters, yaml_file, default_flow_style=False, sort_keys=False)
+            yaml_file.write("ForgettingCurveParameters:\n")
+            yaml_file.write("  conditionsNumber: {}\n".format(len(paras)))
+            yaml_file.write("  conditionDetailNumberArray: ")
+            condition_detail_number_array = [
+                [newparas[j][0] for j in range(len(paras))]
+            ]
+            yaml_file.write(
+                ", ".join(str(x) for x in condition_detail_number_array)
+            )
+            yaml_file.write("\n")
+            yaml_file.write("  conditionsArray:\n")
+            yaml_file.write("  [\n")
 
+            for i, combination in enumerate(data):
+                yaml_file.write("    {\n")
+                for k, params in combination.items():
+                    yaml_file.write("      {}: [{}],\n".format(k, ", ".join(str(x) for x in params)))
+                if i < len(data) - 1:
+                    yaml_file.write("    },\n")
+                else:
+                    yaml_file.write("    },\n")
+
+            yaml_file.write("  ]\n")
+
+            # for i, combination in enumerate(data):
+            #     yaml_file.write("    - {}\n".format(i))
+            #     for k, params in combination.items():
+            #         yaml_file.write("        {}: [")
+            #         yaml_file.write(", ".join(str(x) for x in params))
+            #         yaml_file.write("]\n")
 
     generate_yaml(Curves_paras)
+
 
 if __name__ == '__main__':
     main()
