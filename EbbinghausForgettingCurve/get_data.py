@@ -251,7 +251,7 @@ def my_correct_rate(result1, key_dict):
                         key = next(iter(result1[i][j][k].keys()))
                         for key1 in keys_list:
                             # 此处为阈值，可以调节，目前是100个以上的点才会参与后续的计算
-                            if key1 == key and key_dict[i][j][key] >= 50:
+                            if key1 == key and key_dict[i][j][key] >= 10:
                                 result2[i][j][h][key1][0] = result2[i][j][h][key1][0] + result1[i][j][k][key][0]
                                 result2[i][j][h][key1][1] = result2[i][j][h][key1][1] + result1[i][j][k][key][1]
                             else:
