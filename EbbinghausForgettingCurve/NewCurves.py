@@ -357,18 +357,27 @@ def main():
                     a = paras[i][j][0]
                     b = paras[i][j][1]
                     c = paras[i][j][2]
-                    print('做过', i + 1, '次的且错了', j, '道题目的遗忘率曲线参数为：', 'a = ', a, 'b = ',
-                          b, 'c = ', c)
+                    print('做过', i + 1, '次的且错了', j, '道题目的遗忘率曲线参数为：', 'a = ', a, '; b = ',
+                          b, '; c = ', c, ";")
                     x = np.linspace(0, 44640, 44640)
                     func_vec = np.vectorize(func)
                     y = func_vec(x, a, b, c)
                     fig, ax = plt.subplots()
                     # plot curve
                     ax.plot(x, y)
+                    xArr = []
+                    yArr = []
                     if corr_x_list[i][j] and corr_y_list[i][j]:
                         # plot coordinates
+
                         if corr_x_list[i][j][0].all() != -1 and corr_y_list[i][j][0].all() != -1:
                             ax.plot(corr_x_list[i][j][0], corr_y_list[i][j][0], 'ro')
+
+                        ax.plot(corr_x_list[i][j][0], corr_y_list[i][j][0], 'ro')
+                        xArr.append(corr_x_list[i][j][0])
+                        yArr.append(corr_y_list[i][j][0])
+                    print("xArr=", list(xArr[0]), ";yArr=", list(yArr[0]),";")
+
                     # set title
                     ax.set_title('Plot for {}_{}'.format(i + 1, j))
                     # set grid
@@ -377,7 +386,7 @@ def main():
                     ax.set_xlabel('min')
                     ax.set_ylabel('rate')
                     # save figure
-                    plt.savefig('plot_{}_{}.png'.format(i + 1, j))
+                    plt.savefig('image/plot_{}_{}.png'.format(i + 1, j))
                     plt.clf()
                 else:
                     # remove image file if it exists

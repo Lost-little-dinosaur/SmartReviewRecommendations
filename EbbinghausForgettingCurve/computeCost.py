@@ -49,6 +49,15 @@ def computeCose(y_true, y_pred):
     MPDArr.append(mean_poisson_deviance(y_true, y_pred))
     MGDArr.append(mean_gamma_deviance(y_true, y_pred))
     MTDArr.append(mean_tweedie_deviance(y_true, y_pred))
+
+    # print("R2:", R2Arr[0])
+    # print("下面是拟合优度的各种指标(以下除了R2和EVS越接近1越好外，其他指标越接近0越好)：")
+    # print("MSE:", MSEArr[0])
+    # print("RMSE:", RMSEArr[0])
+    # print("MAE:", MAEArr[0])
+    # print("MAPE:", MAPEArr[0])
+    # print("SMAPE:", SMAPEArr[0])
+
     # print("R2:", R2Arr[0])
     print("下面是拟合优度的各种指标(以下除了R2和EVS越接近1越好外，其他指标越接近0越好)：")
     print("MSE:", MSEArr[0])
@@ -143,9 +152,25 @@ def new_curves():
     for i in range(len(paras)):
         for j in range(i + 2):
             if len(paras[i][j]) != 0:
+<<<<<<< HEAD
                 print(i + 1, "次答题，错", j, "个的拟合曲线的指标如下：")
                 return_result_new(x[i][j], y[i][j], paras[i][j][0], paras[i][j][1], paras[i][j][2], paras[i][j][3])
                 print("\n")
+=======
+                # print(i + 1, "次答题，错", j, "个的拟合曲线的指标如下：")
+                resultArr = return_result_new(x[i][j], y[i][j], paras[i][j][0], paras[i][j][1], paras[i][j][2])
+                if resultArr[5]>0.85:
+                    print(i + 1, "次答题，错", j, "个的拟合曲线的指标如下：")
+                    print("R2:", resultArr[5])
+                    print("MAE:", resultArr[2])
+                    print("RMSE:", resultArr[1])
+                    # print("\n")
+                    a = paras[i][j][0]
+                    b = paras[i][j][1]
+                    c = paras[i][j][2]
+                    print('遗忘率曲线参数为：', 'a = ', a, '; b = ', b, '; c = ', c, ";")
+                    print("\n")
+>>>>>>> dc670841d8f4b6e70c289f711843c526d5c7cca9
 
 
 if __name__ == '__main__':
