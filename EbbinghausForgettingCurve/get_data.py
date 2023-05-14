@@ -287,8 +287,8 @@ my_cor_rate = fun_correc_rate(my_cor_data)
 def Fitring_curves(corr_rates, intervals_list):
     e = math.e
 
-    def func(x, a, b, c):
-        return (e ** (a * x + b) + c)
+    def func(x, a, b, c, d):
+        return a * e ** (b * x + c) + d
 
     my_curves_para = []
     for i in range(len(corr_rates)):
@@ -342,11 +342,12 @@ def Fitring_curves(corr_rates, intervals_list):
                 new_time_list.astype(float)
                 new_lst = np.array(new_lst)
                 new_lst.astype(float)
-                param_bounds = ([-np.inf, -np.inf, -np.inf], [0, 1, np.inf])
+                param_bounds = ([0, -np.inf, -np.inf, -np.inf], [np.inf, 0, np.inf, np.inf])
                 popt, pcov = curve_fit(func, new_time_list, new_lst, bounds=param_bounds)
                 my_curves_para[i][j].append(popt[0])
                 my_curves_para[i][j].append(popt[1])
                 my_curves_para[i][j].append(popt[2])
+                my_curves_para[i][j].append(popt[3])
                 my_curves_y_list[i][j].append(new_lst)
                 my_curves_x_list[i][j].append(new_time_list)
     return my_curves_para, my_curves_x_list, my_curves_y_list
@@ -354,30 +355,3 @@ def Fitring_curves(corr_rates, intervals_list):
 
 Curves_paras, my_cor_rate_x_list, my_cor_rate_y_list = Fitring_curves(my_cor_rate, intervals_list)
 
-
-
-def generate_yaml(paras):
-    newparas = {}
-    for i in range(len(paras)):
-        count = 0
-        # print(i+1," :",paras[i])
-        for j in range(i + 2):
-            if len(paras[i][j]) == 0:
-                count = count + 1
-                paras[i][j].extend([-1, -1])
-            newparas[i] = [i + 2 - count, paras[i]]
-
-    data_dict = {key: val[1] for key, val in newparas.items()}
-
-    # print(data_dict)
-
-    def generate_data(paras):
-        data = []
-        for i in range(len(paras)):
-            data_dict = {}
-            for j in range(len(paras[i])):
-                data_dict[j] = paras[i][j]
-            data.append(data_dict)
-        return data
-
-    data = generate_data(paras)

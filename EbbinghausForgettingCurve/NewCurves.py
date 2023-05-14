@@ -7,6 +7,8 @@ import os
 from scipy.optimize import curve_fit
 import math
 import scipy.stats as stats
+from sklearn.linear_model import LinearRegression
+import json
 
 
 def main():
@@ -270,6 +272,7 @@ def main():
 
     def Fitring_curves(corr_rates, intervals_list):
         e = math.e
+        space = np.array([-1])
 
         def func(x, a, b, c):
             return e ** (a * x + b) + c
@@ -311,11 +314,6 @@ def main():
                 # 如果空子列表的个数 <= 1，则删除该空子列表，并记录保留下来的子列表在源列表中的位置
                 new_lst = [sublst for i, sublst in enumerate(values_list) if i not in empty_indices]
                 kept_indices = [i for i in range(len(values_list)) if i not in empty_indices]
-                # print(values_list, time_stamp_list)
-                # popt, pcov = curve_fit(func, time_stamp_list, values_list, p0=(1, 0))
-                # popt, pcov = curve_fit(exgaussian, time_stamp_list, values_list,
-                #                        p0=[np.mean(time_stamp_list), np.std(time_stamp_list),
-                #                            np.mean(time_stamp_list)])
                 if len(new_lst) >= 5:
                     for k in range(1, len(new_lst)):
                         while new_lst[k] > new_lst[k - 1]:
@@ -338,6 +336,10 @@ def main():
                     my_curves_para[i][j].append(popt[2])
                     my_curves_y_list[i][j].append(new_lst)
                     my_curves_x_list[i][j].append(new_time_list)
+                else:
+                    my_curves_y_list[i][j].append(space)
+                    my_curves_x_list[i][j].append(space)
+
         return my_curves_para, my_curves_x_list, my_curves_y_list
 
     Curves_paras, my_cor_rate_x_list, my_cor_rate_y_list = Fitring_curves(my_cor_rate, intervals_list)
@@ -365,7 +367,8 @@ def main():
                     ax.plot(x, y)
                     if corr_x_list[i][j] and corr_y_list[i][j]:
                         # plot coordinates
-                        ax.plot(corr_x_list[i][j][0], corr_y_list[i][j][0], 'ro')
+                        if corr_x_list[i][j][0].all() != -1 and corr_y_list[i][j][0].all() != -1:
+                            ax.plot(corr_x_list[i][j][0], corr_y_list[i][j][0], 'ro')
                     # set title
                     ax.set_title('Plot for {}_{}'.format(i + 1, j))
                     # set grid
@@ -382,9 +385,125 @@ def main():
                     if os.path.exists(file_path):
                         os.remove(file_path)
 
+    # 画图
     plot_fitted_curves(Curves_paras, my_cor_rate_x_list, my_cor_rate_y_list)
 
-    def generate_yaml(paras):
+    # def generate_yaml(paras):
+    #     newparas = {}
+    #     for i in range(len(paras)):
+    #         count = 0
+    #         # print(i+1," :",paras[i])
+    #         for j in range(i + 2):
+    #             if len(paras[i][j]) == 0:
+    #                 count = count + 1
+    #                 paras[i][j].extend([-1, -1, -1])
+    #             newparas[i] = [i + 2 - count, paras[i]]
+    #
+    #     data_dict = {key: val[1] for key, val in newparas.items()}
+    # print(data_dict)
+    #     def generate_data(paras):
+    #         data = []
+    #         for i in range(len(paras)):
+    #             data_dict = {}
+    #             for j in range(len(paras[i])):
+    #                 data_dict[j] = paras[i][j]
+    #             data.append(data_dict)
+    #         return data
+    #
+    #     data = generate_data(paras)
+    #     # print(data)
+    #     #
+    #     # forgetting_curve_parameters = {
+    #     #     "ForgettingCurveParameters": {
+    #     #         "conditionsNumber": len(paras),
+    #     #         "conditionDetailNumberArray": [i[0] for j in range(len(paras)) for i in newparas[j]],
+    #     #         "conditionsArray": data,
+    #     #     }
+    #     # }
+    #     # print(newparas)
+    #     # print(newparas[0])
+    #
+    #     with open("output.yaml", "w") as yaml_file:
+    #         yaml_file.write("ForgettingCurveParameters:\n")
+    #         yaml_file.write("  conditionsNumber: {}\n".format(len(paras)))
+    #         yaml_file.write("  conditionDetailNumberArray: ")
+    #         condition_detail_number_array = [
+    #             [newparas[j][0] for j in range(len(paras))]
+    #         ]
+    #         yaml_file.write(
+    #             ", ".join(str(x) for x in condition_detail_number_array)
+    #         )
+    #         yaml_file.write("\n")
+    #         yaml_file.write("  conditionsArray:\n")
+    #         yaml_file.write("  [\n")
+    #
+    #         for i, combination in enumerate(data):
+    #             yaml_file.write("    {\n")
+    #             for k, params in combination.items():
+    #                 yaml_file.write("      {}: [{}],\n".format(k, ", ".join(str(x) for x in params)))
+    #             if i < len(data) - 1:
+    #                 yaml_file.write("    },\n")
+    #             else:
+    #                 yaml_file.write("    },\n")
+    #
+    #         yaml_file.write("  ]\n")
+    #
+    #         # for i, combination in enumerate(data):
+    #         #     yaml_file.write("    - {}\n".format(i))
+    #         #     for k, params in combination.items():
+    #         #         yaml_file.write("        {}: [")
+    #         #         yaml_file.write(", ".join(str(x) for x in params))
+    #         #         yaml_file.write("]\n")
+    #
+    # generate_yaml(Curves_paras)
+
+    # print(my_cor_rate_y_list)
+    # 删除2_0中最后一个点
+    my_cor_rate_x_list[1][0] = my_cor_rate_x_list[1][0][0][:7]
+    my_cor_rate_y_list[1][0] = my_cor_rate_y_list[1][0][0][:7]
+    # print(my_cor_rate_x_list[1][0], my_cor_rate_y_list[1][0])\
+    # 增加4_2最后一个点
+    my_cor_rate_x_list[3][2] = np.append(my_cor_rate_x_list[3][2][0], 44640)
+    my_cor_rate_y_list[3][2] = np.append(my_cor_rate_y_list[3][2][0], 0.780)
+    # print(my_cor_rate_x_list[3][2], my_cor_rate_y_list[3][2])
+    # 增加6_3最后一个点
+    my_cor_rate_x_list[5][3] = np.append(my_cor_rate_x_list[5][3][0], 44640)
+    my_cor_rate_y_list[5][3] = np.append(my_cor_rate_y_list[5][3][0], 0.850)
+
+    # print(my_cor_rate_x_list[1][3], my_cor_rate_y_list[5][3])
+
+    # print(my_cor_rate_x_list[1][0])
+    # print(my_cor_rate_x_list[1][1])
+    # my_cor_rate_x_list[1][0] = np.array([my_cor_rate_x_list[1][0]])
+    # my_cor_rate_y_list[1][0] = np.array([my_cor_rate_y_list[1][0]])
+    # print(my_cor_rate_x_list[1][0])
+
+    # 统一数据格式
+    my_cor_rate_x_list[1][0] = np.reshape(my_cor_rate_x_list[1][0], (1, -1))
+    my_cor_rate_x_list[3][2] = np.reshape(my_cor_rate_x_list[3][2], (1, -1))
+    my_cor_rate_x_list[5][3] = np.reshape(my_cor_rate_x_list[5][3], (1, -1))
+    my_cor_rate_y_list[1][0] = np.reshape(my_cor_rate_y_list[1][0], (1, -1))
+    my_cor_rate_y_list[3][2] = np.reshape(my_cor_rate_y_list[3][2], (1, -1))
+    my_cor_rate_y_list[5][3] = np.reshape(my_cor_rate_y_list[5][3], (1, -1))
+
+    # for i in range(len(my_cor_rate_x_list)):
+    #     for j in range(i + 2):
+    #         print("(", i + 1, j, ")")
+    # print(my_cor_rate_x_list[i][j])
+    # print(my_cor_rate_y_list[i][j])
+    all_lerp_para = []
+    for i in range(len(my_cor_rate_x_list)):
+        sublist = []
+        k = i + 2
+        for j in range(k):
+            sublist.append([])
+        all_lerp_para.append(sublist)
+
+    is_curves = [[3, 1], [4, 0], [5, 1], [5, 2], [5, 3], [5, 5], [6, 0], [6, 4], [6, 5], [7, 0], [7, 2], [8, 1], [8, 2]]
+    is_abandon = [[6, 2], [7, 1], [8, 0]]
+
+    def generate_json(paras, tArr, yArr):
+
         newparas = {}
         for i in range(len(paras)):
             count = 0
@@ -392,7 +511,7 @@ def main():
             for j in range(i + 2):
                 if len(paras[i][j]) == 0:
                     count = count + 1
-                    paras[i][j].extend([-1, -1])
+                    paras[i][j].extend([-1, -1, -1])
                 newparas[i] = [i + 2 - count, paras[i]]
 
         data_dict = {key: val[1] for key, val in newparas.items()}
@@ -409,51 +528,73 @@ def main():
             return data
 
         data = generate_data(paras)
-        # print(data)
-        #
-        # forgetting_curve_parameters = {
-        #     "ForgettingCurveParameters": {
-        #         "conditionsNumber": len(paras),
-        #         "conditionDetailNumberArray": [i[0] for j in range(len(paras)) for i in newparas[j]],
-        #         "conditionsArray": data,
-        #     }
-        # }
-        # print(newparas)
-        # print(newparas[0])
 
-        with open("output.yaml", "w") as yaml_file:
-            yaml_file.write("ForgettingCurveParameters:\n")
-            yaml_file.write("  conditionsNumber: {}\n".format(len(paras)))
-            yaml_file.write("  conditionDetailNumberArray: ")
-            condition_detail_number_array = [
-                [newparas[j][0] for j in range(len(paras))]
-            ]
-            yaml_file.write(
-                ", ".join(str(x) for x in condition_detail_number_array)
-            )
-            yaml_file.write("\n")
-            yaml_file.write("  conditionsArray:\n")
-            yaml_file.write("  [\n")
+        def calculate_slope_intercept(x, y):
+            slopes = []
+            intercepts = []
+            x_next = []
 
-            for i, combination in enumerate(data):
-                yaml_file.write("    {\n")
-                for k, params in combination.items():
-                    yaml_file.write("      {}: [{}],\n".format(k, ", ".join(str(x) for x in params)))
-                if i < len(data) - 1:
-                    yaml_file.write("    },\n")
+            for i in range(len(x) - 1):
+                slope = (y[i + 1] - y[i]) / (x[i + 1] - x[i])
+                intercept = y[i] - slope * x[i]
+                slopes.append(slope)
+                intercepts.append(intercept)
+                x_next.append(x[i + 1])
+                # 复制最后一行并将x_next值改为999999
+            slopes.append(slopes[-1])
+            intercepts.append(intercepts[-1])
+            x_next.append(999999)
+
+            return np.column_stack((slopes, intercepts, x_next))
+
+        for i in range(len(my_cor_rate_x_list)):
+            for j in range(i + 2):
+                if (my_cor_rate_x_list[i][j][0] != -1).all():
+                    result = calculate_slope_intercept(my_cor_rate_x_list[i][j][0], my_cor_rate_y_list[i][j][0])
+                    all_lerp_para[i][j].append(result)
                 else:
-                    yaml_file.write("    },\n")
+                    result = np.array([-1])
+                    all_lerp_para[i][j].append(result)
 
-            yaml_file.write("  ]\n")
+        # print(all_lerp_para, all_lerp_para[2][0][0][4], my_cor_rate_x_list[0][0][0])
+        # print(paras[0][0])
+        all_data = []
 
-            # for i, combination in enumerate(data):
-            #     yaml_file.write("    - {}\n".format(i))
-            #     for k, params in combination.items():
-            #         yaml_file.write("        {}: [")
-            #         yaml_file.write(", ".join(str(x) for x in params))
-            #         yaml_file.write("]\n")
+        for i in range(len(paras)):
+            BigGroups = {}
+            SmallGroups = []
+            for j in range(i + 2):
 
-    generate_yaml(Curves_paras)
+                Type1Parameters = []
+                for k in range(len(all_lerp_para[i][j][0])):
+
+                    if len(all_lerp_para[i][j][0]) == 1:
+                        correct = {}
+                    else:
+                        correct = {"TopTime": all_lerp_para[i][j][0][k][2], "K": all_lerp_para[i][j][0][k][0],
+                                   "B": all_lerp_para[i][j][0][k][1]}
+                    Type1Parameters.append(correct)
+                # print(Type1Parameters)
+                if [i + 1, j] in is_curves:
+                    samecorrect = {"CorrectTimes": (i + 1 - j), "ParameterType": 0, "Type0Parameters": paras[i][j],
+                                   "Type1Parameters": Type1Parameters}
+                elif [i + 1, j] in is_abandon or len(all_lerp_para[i][j][0]) == 1:
+                    samecorrect = {"CorrectTimes": (i + 1 - j), "ParameterType": -1, "Type0Parameters": paras[i][j],
+                                   "Type1Parameters": Type1Parameters}
+                else:
+                    samecorrect = {"CorrectTimes": (i + 1 - j), "ParameterType": 1, "Type0Parameters": paras[i][j],
+                                   "Type1Parameters": Type1Parameters}
+
+                SmallGroups.append(samecorrect)
+                # print(SmallGroups)
+
+            BigGroups = {"AnswerTimes": (i + 1), "SmallGroups": SmallGroups}
+            all_data.append(BigGroups)
+        # print(all_data)
+        with open('output_paras.json', 'w') as f:
+            json.dump(all_data, f, indent=4)
+
+    generate_json(Curves_paras, my_cor_rate_x_list, my_cor_rate_y_list)
 
 
 if __name__ == '__main__':

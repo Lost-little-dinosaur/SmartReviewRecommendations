@@ -49,21 +49,21 @@ def computeCose(y_true, y_pred):
     MPDArr.append(mean_poisson_deviance(y_true, y_pred))
     MGDArr.append(mean_gamma_deviance(y_true, y_pred))
     MTDArr.append(mean_tweedie_deviance(y_true, y_pred))
-    print("R2:", R2Arr[0])
-    # print("下面是拟合优度的各种指标(以下除了R2和EVS越接近1越好外，其他指标越接近0越好)：")
-    # print("MSE:", MSEArr[0])
-    # print("RMSE:", RMSEArr[0])
-    # print("MAE:", MAEArr[0])
-    # print("MAPE:", MAPEArr[0])
-    # print("SMAPE:", SMAPEArr[0])
     # print("R2:", R2Arr[0])
-    # print("MSLE:", MSLEArr[0])
-    # print("MedAE:", MedAEArr[0])
-    # print("EVS:", EVSArr[0])
-    # print("MaxErr:", MaxErrArr[0])
-    # print("MPD:", MPDArr[0])
-    # print("MGD:", MGDArr[0])
-    # print("MTD:", MTDArr[0])
+    print("下面是拟合优度的各种指标(以下除了R2和EVS越接近1越好外，其他指标越接近0越好)：")
+    print("MSE:", MSEArr[0])
+    print("RMSE:", RMSEArr[0])
+    print("MAE:", MAEArr[0])
+    print("MAPE:", MAPEArr[0])
+    print("SMAPE:", SMAPEArr[0])
+    print("R2:", R2Arr[0])
+    print("MSLE:", MSLEArr[0])
+    print("MedAE:", MedAEArr[0])
+    print("EVS:", EVSArr[0])
+    print("MaxErr:", MaxErrArr[0])
+    print("MPD:", MPDArr[0])
+    print("MGD:", MGDArr[0])
+    print("MTD:", MTDArr[0])
     return [MSEArr[0], RMSEArr[0], MAEArr[0], MAPEArr[0], SMAPEArr[0], R2Arr[0], MSLEArr[0], MedAEArr[0], EVSArr[0],
             MaxErrArr[0], MPDArr[0], MGDArr[0], MTDArr[0]]
 
@@ -82,7 +82,7 @@ def return_result(result, a, b):
     return computeCose(result1, pre_result)
 
 
-def return_result_new(result0, result1, a, b, c):
+def return_result_new(result0, result1, a, b, c, d):
     pre_result = []
     # result0 = [i[0] for i in result]
     # result1 = [i[1] for i in result]
@@ -91,7 +91,7 @@ def return_result_new(result0, result1, a, b, c):
     result1 = np.array(result1[0])
     result1 = result1.astype('float64')
     for i in range(len(result0)):
-        preresult = math.e ** (a * result0[i] + b) + c
+        preresult = a * math.e ** (b * result0[i] + c) + d
         pre_result.append(preresult)
     return computeCose(result1, pre_result)
 
@@ -142,9 +142,9 @@ def new_curves():
 
     for i in range(len(paras)):
         for j in range(i + 2):
-            if paras[i][j] != 0:
+            if len(paras[i][j]) != 0:
                 print(i + 1, "次答题，错", j, "个的拟合曲线的指标如下：")
-                return_result_new(x[i][j], y[i][j], paras[i][j][0], paras[i][j][1], paras[i][j][2])
+                return_result_new(x[i][j], y[i][j], paras[i][j][0], paras[i][j][1], paras[i][j][2], paras[i][j][3])
                 print("\n")
 
 
@@ -153,4 +153,3 @@ if __name__ == '__main__':
     # myarray = np.array(get_data.my_cor_rate_y_list[0][0][0])
     # print(myarray)
     # print(get_data.Curves_paras[0][0])
-
