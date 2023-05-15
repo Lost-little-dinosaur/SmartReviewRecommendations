@@ -376,7 +376,7 @@ def main():
                         ax.plot(corr_x_list[i][j][0], corr_y_list[i][j][0], 'ro')
                         xArr.append(corr_x_list[i][j][0])
                         yArr.append(corr_y_list[i][j][0])
-                    print("xArr=", list(xArr[0]), ";yArr=", list(yArr[0]),";")
+                    print("xArr=", list(xArr[0]), ";yArr=", list(yArr[0]), ";")
 
                     # set title
                     ax.set_title('Plot for {}_{}'.format(i + 1, j))
@@ -470,16 +470,15 @@ def main():
     # 删除2_0中最后一个点
     my_cor_rate_x_list[1][0] = my_cor_rate_x_list[1][0][0][:7]
     my_cor_rate_y_list[1][0] = my_cor_rate_y_list[1][0][0][:7]
-    # print(my_cor_rate_x_list[1][0], my_cor_rate_y_list[1][0])\
+    print(my_cor_rate_x_list[1][0], my_cor_rate_y_list[1][0])
     # 增加4_2最后一个点
     my_cor_rate_x_list[3][2] = np.append(my_cor_rate_x_list[3][2][0], 44640)
-    my_cor_rate_y_list[3][2] = np.append(my_cor_rate_y_list[3][2][0], 0.780)
-    # print(my_cor_rate_x_list[3][2], my_cor_rate_y_list[3][2])
+    my_cor_rate_y_list[3][2] = np.append(my_cor_rate_y_list[3][2][0], 0.750)
+    print(my_cor_rate_x_list[3][2], my_cor_rate_y_list[3][2])
     # 增加6_3最后一个点
     my_cor_rate_x_list[5][3] = np.append(my_cor_rate_x_list[5][3][0], 44640)
     my_cor_rate_y_list[5][3] = np.append(my_cor_rate_y_list[5][3][0], 0.850)
-
-    # print(my_cor_rate_x_list[1][3], my_cor_rate_y_list[5][3])
+    print(my_cor_rate_x_list[5][3], my_cor_rate_y_list[5][3])
 
     # print(my_cor_rate_x_list[1][0])
     # print(my_cor_rate_x_list[1][1])
@@ -494,6 +493,7 @@ def main():
     my_cor_rate_y_list[1][0] = np.reshape(my_cor_rate_y_list[1][0], (1, -1))
     my_cor_rate_y_list[3][2] = np.reshape(my_cor_rate_y_list[3][2], (1, -1))
     my_cor_rate_y_list[5][3] = np.reshape(my_cor_rate_y_list[5][3], (1, -1))
+    print(my_cor_rate_x_list[1][0], my_cor_rate_y_list[1][0])
 
     # for i in range(len(my_cor_rate_x_list)):
     #     for j in range(i + 2):
@@ -512,32 +512,6 @@ def main():
     is_abandon = [[6, 2], [7, 1], [8, 0]]
 
     def generate_json(paras, tArr, yArr):
-
-        newparas = {}
-        for i in range(len(paras)):
-            count = 0
-            # print(i+1," :",paras[i])
-            for j in range(i + 2):
-                if len(paras[i][j]) == 0:
-                    count = count + 1
-                    paras[i][j].extend([-1, -1, -1])
-                newparas[i] = [i + 2 - count, paras[i]]
-
-        data_dict = {key: val[1] for key, val in newparas.items()}
-
-        # print(data_dict)
-
-        def generate_data(paras):
-            data = []
-            for i in range(len(paras)):
-                data_dict = {}
-                for j in range(len(paras[i])):
-                    data_dict[j] = paras[i][j]
-                data.append(data_dict)
-            return data
-
-        data = generate_data(paras)
-
         def calculate_slope_intercept(x, y):
             slopes = []
             intercepts = []
